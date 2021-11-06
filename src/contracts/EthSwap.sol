@@ -14,7 +14,7 @@ contract EthSwap {
         uint rate
     );
 
-     event TokensSold(
+    event TokensSold(
         address account,
         address token,
         uint amount,
