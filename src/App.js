@@ -1,10 +1,12 @@
-import React,{Fragment, useEffect} from 'react';
+import React, { Fragment, useEffect } from 'react';
+import useState from 'react-usestateref';
 import './App.css';
 import Web3 from 'web3';
 import EthSwap from './abis/EthSwap.json';
 import Token from './abis/Token.json';
-import Navbar from './components/ui/Navbar';
-import useState from 'react-usestateref';
+import Navbar from './components/Navbar';
+import Main from './components/Main';
+
 
 const App = () => {
 
@@ -16,7 +18,8 @@ const App = () => {
   // Website states
   const [tokenContract, setTokenContract, tokenContractRef] = useState({});
   const [ethSwapContract, setEthSwapContract, ethSwapContractRef] = useState({});
- 
+
+   const [isLoading, setIsLoading] = useState(true);
 
   
     // Connect to the metaMask and handle all the actions
@@ -69,7 +72,9 @@ const App = () => {
       } else {
         alert('Contract not deployed to the detected network');
       }
-    
+
+      // Stop the loading and show the connect
+      if(tokenData && ethSwapData) setIsLoading(false);
       
   }
   
@@ -77,7 +82,8 @@ const App = () => {
   useEffect(() => {
     const connectToBlockchain = async () => {
       const isMetaMaskConnected = await connectToMetaMask();
-      if(isMetaMaskConnected) await loadBlockchainData();  
+      if (isMetaMaskConnected) await loadBlockchainData();  
+      
     }
     connectToBlockchain();
   }, []);
@@ -88,9 +94,7 @@ const App = () => {
   return (
     <Fragment>
       <Navbar account={ account}/>
-          <main role='main' className='container'>
-              <h1>Ethereum Market Place</h1>
-          </main>
+      <Main isLoading={isLoading}/>
     </Fragment>
   );
 };
