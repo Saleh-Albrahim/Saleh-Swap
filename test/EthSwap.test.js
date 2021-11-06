@@ -4,13 +4,8 @@ const EthSwap = artifacts.require('EthSwap');
 
 require('chai').use(require('chai-as-promised')).should();
 
-function toWei(n) {
-  return web3.utils.toWei(n, 'ether');
-}
-
-function fromWei(n) {
-  return web3.utils.fromWei(n, 'ether');
-}
+// utils
+const { toWei, fromWei } = web3.utils;
 
 contract('EthSwap', ([deployer, investor]) => {
   let token, ethSwap;
