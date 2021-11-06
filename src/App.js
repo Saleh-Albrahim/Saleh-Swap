@@ -1,32 +1,46 @@
-import React,{Fragment, useEffect,useState} from 'react';
+import React,{Fragment, useEffect} from 'react';
 import './App.css';
 import Web3 from 'web3';
 import EthSwap from './abis/EthSwap.json';
 import Token from './abis/Token.json';
 import Navbar from './components/ui/Navbar';
+import useState from 'react-usestateref';
 
 const App = () => {
 
-  const [account, setAccount] = useState('');
-  const [balance, setBalance] = useState('');
-  const [tokenContract, setTokenContract] = useState({});
+  // Account states
+  const [account, setAccount,accountRef] = useState('');
+  const [accountEthBalance, setAccountEthBalance, accountEthBalanceRef] = useState('');
+  const [accountTokenBalance, setAccountTokenBalance, accountTokenBalanceRef] = useState('0');
+  
+  // Website states
+  const [tokenContract, setTokenContract, tokenContractRef] = useState({});
+  const [ethSwapContract, setEthSwapContract, ethSwapContractRef] = useState({});
+ 
 
-  // Connect to metaMask
-  useEffect(() => {
+  
+    // Connect to the metaMask and handle all the actions
     const connectToMetaMask = async () => {
-      if (window.ethereum) {
-        window.web3=new Web3(window.ethereum);
+    if (window.ethereum) {
+      try {
+        window.web3 = new Web3(window.ethereum);
         await window.ethereum.enable();
-      } else {
+        return true;
+      }
+      catch (error) {
+        if (error.code === 4001) {
+          alert('Please accept the request');
+        }
+        if (error.code === -32002) {
+            alert('You have already pending request');
+        }
+      }
+    } else {
         alert('No web3 instance injected, using Local web3.');
       }
-    }
-    connectToMetaMask();
-  }, []);
-
-   // Load the blockChain data
-  useEffect(() => {
-    const loadBlockChainData = async () => {
+  }
+    // Load the blockchain data
+    const loadBlockchainData = async () => {
       const web3 = window.web3;
 
       // Store the account in the account state
@@ -34,26 +48,41 @@ const App = () => {
       await setAccount(accounts[0]);
 
       // Store the balance in the balance state
-      const ethBalance = await web3.eth.getBalance(accounts[0]);
-      setBalance(ethBalance);
+      const ethBalance = await web3.eth.getBalance(accountRef.current);
+      setAccountEthBalance(ethBalance);
 
-      // Get network ID
+      // Load the token
       const networkId = await web3.eth.net.getId();
       const tokenData = Token.networks[networkId];
-
       // Check if the contract deployed to the detected network
       if (tokenData) {
-        const token = new web3.eth.Contract(Token.abi, tokenData.address);
-        setTokenContract(token);
-        console.log(token);
+        setTokenContract(new web3.eth.Contract(Token.abi, tokenData.address));
+        setAccountTokenBalance(await tokenContractRef.current.methods.balanceOf(accountRef.current).call());
+      } else {
+        alert('Contract not deployed to the detected network');
+      }
+
+      const ethSwapData = EthSwap.networks[networkId];
+      // Check if the contract deployed to the detected network
+      if (ethSwapData) {
+        setEthSwapContract(new web3.eth.Contract(EthSwap.abi, ethSwapData.address));
       } else {
         alert('Contract not deployed to the detected network');
       }
     
       
+  }
+  
+    // Call the above functions when the Page fully load
+  useEffect(() => {
+    const connectToBlockchain = async () => {
+      const isMetaMaskConnected = await connectToMetaMask();
+      if(isMetaMaskConnected) await loadBlockchainData();  
     }
-    loadBlockChainData();
+    connectToBlockchain();
   }, []);
+
+
 
 
   return (

@@ -6,9 +6,9 @@ function Navbar({ account }) {
   if (account) identicon = new Identicon(account, 30).toString();
 
   return (
-    <nav class='navbar navbar-dark  fixed-top bg-dark p-3 shadow'>
+    <nav className='navbar navbar-dark  fixed-top bg-dark p-3 shadow'>
       <p className='navbar-brand  my-auto'>Ethereum Market Place</p>
-      <ul class='navbar-nav d-inline my-auto'>
+      <ul className='navbar-nav d-inline my-auto'>
         <li>
           <span className='nav-address'>{account}</span>
           {identicon && (
