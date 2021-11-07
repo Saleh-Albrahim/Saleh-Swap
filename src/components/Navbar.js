@@ -7,7 +7,7 @@ function Navbar({ account }) {
 
   return (
     <nav className='navbar navbar-dark  fixed-top bg-dark p-3 shadow'>
-      <p className='navbar-brand  my-auto'>Ethereum Market Place</p>
+      <p className='navbar-brand  my-auto'>Saleh Swap</p>
       <ul className='navbar-nav d-inline my-auto'>
         <li>
           <span className='nav-address'>{account}</span>
