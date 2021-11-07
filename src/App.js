@@ -94,8 +94,6 @@ const App = () => {
 
   const sellTokens = (tokenAmount) => {
     setIsLoading(true);
-
-    console.log(tokenContract._address);
     tokenContract.methods
       .approve(tokenContract._address, tokenAmount)
       .send({ from: account })

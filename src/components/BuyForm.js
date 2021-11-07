@@ -61,8 +61,8 @@ function BuyForm({ accountEthBalance, accountTokenBalance, buyTokens }) {
         <b class='me-auto font-weight-bold'>Exchange Rate</b>
         <div class='text-muted'>1 ETH = 100 SALEH</div>
       </label>
-      <button type='submit' className='btn btn-primary btn-lg btn-block w-100'>
-        SWAP
+      <button type='submit' className='btn btn-success btn-lg btn-block w-100'>
+        BUY SALEH !
       </button>
     </form>
   );
