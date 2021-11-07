@@ -151,7 +151,7 @@
   "sourceMap": "52:1663:0:-;;;76:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;172:3;155:20;;437:64;8:9:-1;5:2;;;30:1;27;20:12;5:2;437:64:0;;;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;437:64:0;;;;;;;;;;;;;;;;487:6;481:5;;:12;;;;;;;;;;;;;;;;;;437:64;52:1663;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
   "deployedSourceMap": "52:1663:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;76:47;;8:9:-1;5:2;;;30:1;27;20:12;5:2;76:47:0;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;76:47:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;155:20;;8:9:-1;5:2;;;30:1;27;20:12;5:2;155:20:0;;;:::i;:::-;;;;;;;;;;;;;;;;;;;997:715;;8:9:-1;5:2;;;30:1;27;20:12;5:2;997:715:0;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;997:715:0;;;;;;;;;;;;;;;;;:::i;:::-;;509:480;;;:::i;:::-;;130:18;;8:9:-1;5:2;;;30:1;27;20:12;5:2;130:18:0;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;76:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;155:20::-;;;;:::o;997:715::-;1149:7;1119:5;;;;;;;;;;;:15;;;1135:10;1119:27;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1119:27:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1119:27:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;1119:27:0;;;;;;;;;;;;;;;;:37;;1111:46;;;;;;1224:14;1251:4;;1241:7;:14;;;;;;1224:31;;1349:9;1326:21;:32;;1318:41;;;;;;1449:5;;;;;;;;;;;:18;;;1468:10;1487:4;1494:7;1449:53;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1449:53:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1449:53:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;1449:53:0;;;;;;;;;;;;;;;;;1573:10;:19;;:30;1593:9;1573:30;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1573:30:0;1648:56;1664:10;1684:5;;;;;;;;;;;1691:7;1699:4;;1648:56;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;997:715;;:::o;509:480::-;672:16;703:4;;691:9;:16;672:35;;812:11;779:5;;;;;;;;;;;:15;;;803:4;779:30;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;779:30:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;779:30:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;779:30:0;;;;;;;;;;;;;;;;:44;;771:53;;;;;;837:5;;;;;;;;;;;:14;;;852:10;864:11;837:39;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;837:39:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;837:39:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;837:39:0;;;;;;;;;;;;;;;;;921:60;937:10;957:5;;;;;;;;;;;964:11;976:4;;921:60;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;509:480;:::o;130:18::-;;;;;;;;;;;;;:::o",
   "source": "pragma solidity ^0.5.0;\r\n\r\nimport \"./Token.sol\";\r\n\r\ncontract EthSwap {\r\n    string public name =\"EthSwap Instant Exchanges\";\r\n    Token public token;\r\n    uint public rate=100;\r\n\r\n    event TokensPurchased(\r\n        address account,\r\n        address token,\r\n        uint amount,\r\n        uint rate\r\n    );\r\n\r\n    event TokensSold(\r\n        address account,\r\n        address token,\r\n        uint amount,\r\n        uint rate\r\n    );\r\n\r\n    constructor(Token _token) public {\r\n        token=_token;\r\n    }\r\n\r\n    function buyTokens() public payable {\r\n        // Redemption rate = # of tokens they receive for 1 ether\r\n        // About of Ethereum * Redemption rate \r\n        uint tokenAmount = msg.value * rate;\r\n\r\n        // Require that EthSwap has enough tokens\r\n        require(token.balanceOf(address(this))>= tokenAmount);\r\n\r\n        token.transfer(msg.sender, tokenAmount);\r\n\r\n        // Emit an event \r\n        emit TokensPurchased(msg.sender, address(token),tokenAmount,rate);\r\n    }\r\n\r\n    function sellTokens(uint _amount) public {\r\n\r\n        // User can't sell tokens more than what they have\r\n        require(token.balanceOf(msg.sender)>= _amount);\r\n\r\n        // Calculate the amount of Ether to redeem  \r\n        uint ethAmount = _amount / rate;\r\n\r\n        // Require that EthSwap has enough Ether\r\n        require(address(this).balance>=ethAmount);\r\n\r\n        // Transfer Saleh Token from the seller address to the swap address\r\n        token.transferFrom(msg.sender,address(this), _amount);\r\n\r\n        // Transfer ethereum token to the seller address\r\n        msg.sender.transfer(ethAmount);\r\n\r\n        // Emit an event \r\n        emit TokensPurchased(msg.sender, address(token),_amount,rate);\r\n    }\r\n}",
-  "sourcePath": "C:\\Users\\SAlbr\\Web-Projects\\eth-marketplace\\src\\contracts\\EthSwap.sol",
+  "sourcePath": "C:\\Users\\SAlbr\\Web-Projects\\saleh-swap\\src\\contracts\\EthSwap.sol",
   "ast": {
     "absolutePath": "project:/src/contracts/EthSwap.sol",
     "exportedSymbols": {
@@ -4192,6 +4192,12 @@
     "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0x50595E91273CBE12a4dfd9CE073540A6b272D81D",
+      "transactionHash": "0x1365b4eb4e5c1e463581c43e7a736f59a84c0662c213447144da5d7a5cf9a62c"
+    },
     "5777": {
       "events": {},
       "links": {},
@@ -4200,7 +4206,8 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-07T10:55:45.830Z",
+  "updatedAt": "2021-11-07T12:17:56.819Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },

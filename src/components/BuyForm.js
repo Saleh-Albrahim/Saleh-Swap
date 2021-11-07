@@ -24,11 +24,13 @@ function BuyForm({ accountEthBalance, accountTokenBalance, buyTokens }) {
       </div>
       <div className='input-group mb-4'>
         <input
-          type='number'
+          type='text'
           onChange={(event) => {
-            const etherAmount = event.target.value;
+            let etherAmount = event.target.value;
             if (etherAmount < 0) {
               event.target.value = 0;
+            } else if (isNaN(etherAmount)) {
+              event.target.value = etherAmount.substring(0, etherAmount.length - 1);
             } else setInput(etherAmount);
           }}
           className='form-control form-control-lg'

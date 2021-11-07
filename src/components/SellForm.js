@@ -24,9 +24,11 @@ function SellForm({ accountEthBalance, accountTokenBalance, sellTokens }) {
         <input
           type='number'
           onChange={(event) => {
-            const tokenAmount = event.target.value;
+            let tokenAmount = event.target.value;
             if (tokenAmount < 0) {
               event.target.value = 0;
+            } else if (isNaN(tokenAmount)) {
+              event.target.value = tokenAmount.substring(0, tokenAmount.length - 1);
             } else setOutput(tokenAmount);
           }}
           className='form-control form-control-lg'
