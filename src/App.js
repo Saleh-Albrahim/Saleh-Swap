@@ -95,7 +95,7 @@ const App = () => {
   const sellTokens = (tokenAmount) => {
     setIsLoading(true);
     tokenContract.methods
-      .approve(tokenContract._address, tokenAmount)
+      .approve(ethSwapContract._address, tokenAmount)
       .send({ from: account })
       .on('transactionHash', (hash) => {
         ethSwapContract.methods

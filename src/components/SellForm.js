@@ -15,9 +15,9 @@ function SellForm({ accountEthBalance, accountTokenBalance, sellTokens }) {
         sellTokens(etherAmount);
       }}
     >
-      <label class='d-flex'>
-        <b class='me-auto font-weight-bold'>Input</b>
-        <div class='text-muted'>{window.web3.utils.fromWei(accountTokenBalance, 'Ether')}</div>
+      <label className='d-flex'>
+        <b className='me-auto font-weight-bold'>Input</b>
+        <div className='text-muted'>{window.web3.utils.fromWei(accountTokenBalance, 'Ether')}</div>
       </label>
 
       <div className='input-group mb-4'>
@@ -41,9 +41,9 @@ function SellForm({ accountEthBalance, accountTokenBalance, sellTokens }) {
         </div>
       </div>
 
-      <label class='d-flex'>
-        <b class='me-auto'>Output</b>
-        <div class='text-muted'>{window.web3.utils.fromWei(accountEthBalance, 'Ether')}</div>
+      <label className='d-flex'>
+        <b className='me-auto'>Output</b>
+        <div className='text-muted'>{window.web3.utils.fromWei(accountEthBalance, 'Ether')}</div>
       </label>
       <div className='input-group mb-2'>
         <input type='text' className='form-control form-control-lg' placeholder='0' value={output / 100} disabled />
@@ -54,9 +54,9 @@ function SellForm({ accountEthBalance, accountTokenBalance, sellTokens }) {
           </div>
         </div>
       </div>
-      <label class='d-flex mb-5 mt-3'>
-        <b class='me-auto font-weight-bold'>Exchange Rate</b>
-        <div class='text-muted'>1 ETH = 100 SALEH</div>
+      <label className='d-flex mb-5 mt-3'>
+        <b className='me-auto font-weight-bold'>Exchange Rate</b>
+        <div className='text-muted'>1 ETH = 100 SALEH</div>
       </label>
       <button type='submit' className='btn btn-danger btn-lg btn-block w-100'>
         SELL SALEH !

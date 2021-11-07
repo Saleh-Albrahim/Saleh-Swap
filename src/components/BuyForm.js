@@ -17,9 +17,9 @@ function BuyForm({ accountEthBalance, accountTokenBalance, buyTokens }) {
       }}
     >
       <div>
-        <label class='d-flex'>
-          <b class='me-auto font-weight-bold'>Input</b>
-          <div class='text-muted'>{window.web3.utils.fromWei(accountEthBalance, 'Ether')}</div>
+        <label className='d-flex'>
+          <b className='me-auto font-weight-bold'>Input</b>
+          <div className='text-muted'>{window.web3.utils.fromWei(accountEthBalance, 'Ether')}</div>
         </label>
       </div>
       <div className='input-group mb-4'>
@@ -43,9 +43,9 @@ function BuyForm({ accountEthBalance, accountTokenBalance, buyTokens }) {
         </div>
       </div>
 
-      <label class='d-flex'>
-        <b class='me-auto font-weight-bold'>Output</b>
-        <div class='text-muted'>{window.web3.utils.fromWei(accountTokenBalance, 'Ether')}</div>
+      <label className='d-flex'>
+        <b className='me-auto font-weight-bold'>Output</b>
+        <div className='text-muted'>{window.web3.utils.fromWei(accountTokenBalance, 'Ether')}</div>
       </label>
       <div className='input-group mb-2'>
         <input type='text' className='form-control form-control-lg' placeholder='0' value={input * 100} disabled />
@@ -57,9 +57,9 @@ function BuyForm({ accountEthBalance, accountTokenBalance, buyTokens }) {
         </div>
       </div>
 
-      <label class='d-flex mb-5 mt-3'>
-        <b class='me-auto font-weight-bold'>Exchange Rate</b>
-        <div class='text-muted'>1 ETH = 100 SALEH</div>
+      <label className='d-flex mb-5 mt-3'>
+        <b className='me-auto font-weight-bold'>Exchange Rate</b>
+        <div className='text-muted'>1 ETH = 100 SALEH</div>
       </label>
       <button type='submit' className='btn btn-success btn-lg btn-block w-100'>
         BUY SALEH !
