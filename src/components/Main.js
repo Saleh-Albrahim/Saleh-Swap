@@ -3,44 +3,46 @@ import Spinner from './Spinner';
 import BuyForm from './BuyForm';
 import SellForm from './SellForm';
 
-function Main({ isLoading, accountEthBalance, accountTokenBalance }) {
+function Main({ isLoading, accountEthBalance, accountTokenBalance, buyTokens, sellTokens }) {
   const [currentForm, setCurrentForm] = useState('buy');
 
   const content =
     currentForm === 'buy' ? (
-      <BuyForm accountEthBalance={accountEthBalance} accountTokenBalance={accountTokenBalance} />
+      <BuyForm accountEthBalance={accountEthBalance} accountTokenBalance={accountTokenBalance} buyTokens={buyTokens} />
     ) : (
-      <SellForm accountEthBalance={accountEthBalance} accountTokenBalance={accountTokenBalance} />
+      <SellForm accountEthBalance={accountEthBalance} accountTokenBalance={accountTokenBalance} sellTokens={sellTokens} />
     );
 
-  return isLoading ? (
-    <Spinner />
-  ) : (
+  return (
     <div className='container'>
-      <div id='content' className='mt-3'>
-        <div className='d-flex justify-content-between mb-3'>
-          <button
-            className='btn btn-success btn-lg w-25'
-            onClick={() => {
-              setCurrentForm('buy');
-            }}
-          >
-            Buy
-          </button>
-          <button
-            className='btn btn-danger btn-lg w-25'
-            onClick={() => {
-              setCurrentForm('sell');
-            }}
-          >
-            Sell
-          </button>
-        </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div id='content' className='border border-2 p-5 rounded-3 shadow-lg bg-body mt-5 '>
+          <div className='d-flex justify-content-between mb-3'>
+            <button
+              className='btn btn-success btn-lg w-25'
+              onClick={() => {
+                setCurrentForm('buy');
+              }}
+            >
+              Buy
+            </button>
+            <button
+              className='btn btn-danger btn-lg w-25'
+              onClick={() => {
+                setCurrentForm('sell');
+              }}
+            >
+              Sell
+            </button>
+          </div>
 
-        <div className='card mb-4'>
-          <div className='card-body'>{content}</div>
+          <div className='card'>
+            <div className='card-body'>{content}</div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

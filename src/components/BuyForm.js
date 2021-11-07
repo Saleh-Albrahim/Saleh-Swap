@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import ethLogo from '../img/eth.png';
 
-function BuyForm({ accountEthBalance, accountTokenBalance }) {
+function BuyForm({ accountEthBalance, accountTokenBalance, buyTokens }) {
   const [input, setInput] = useState(0);
+
   return (
     <form
       className='mb-3'
-      //   onSubmit={(event) => {
-      //     event.preventDefault();
-      //     let etherAmount;
-      //     etherAmount = this.input.value.toString();
-      //     etherAmount = window.web3.utils.toWei(etherAmount, 'Ether');
-      //     //this.props.buyTokens(etherAmount);
-      //   }}
+      onSubmit={(event) => {
+        event.preventDefault();
+        let etherAmount;
+        etherAmount = input.toString();
+        etherAmount = window.web3.utils.toWei(etherAmount, 'Ether');
+        buyTokens(etherAmount);
+      }}
     >
       <div>
         <label className='float-left'>
@@ -22,10 +23,12 @@ function BuyForm({ accountEthBalance, accountTokenBalance }) {
       </div>
       <div className='input-group mb-4'>
         <input
-          type='text'
+          type='number'
           onChange={(event) => {
             const etherAmount = event.target.value;
-            setInput(etherAmount * 100);
+            if (etherAmount < 0) {
+              event.target.value = 0;
+            } else setInput(etherAmount);
           }}
           className='form-control form-control-lg'
           placeholder='0'
@@ -45,7 +48,7 @@ function BuyForm({ accountEthBalance, accountTokenBalance }) {
         <span className='float-right text-muted'>Balance: {window.web3.utils.fromWei(accountTokenBalance, 'Ether')}</span>
       </div>
       <div className='input-group mb-2'>
-        <input type='text' className='form-control form-control-lg' placeholder='0' value={input} disabled />
+        <input type='text' className='form-control form-control-lg' placeholder='0' value={input * 100} disabled />
         <div className='input-group-append'>
           <div className='input-group-text p-2'>
             <img src={ethLogo} height='32' alt='' />
