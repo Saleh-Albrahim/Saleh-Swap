@@ -62,7 +62,7 @@ const App = () => {
         setTokenContract(new web3.eth.Contract(Token.abi, tokenData.address));
         setAccountTokenBalance(await tokenContractRef.current.methods.balanceOf(accountRef.current).call());
       } else {
-        alert('Contract not deployed to the detected network');
+        alert('Token contract not deployed to the detected network');
       }
 
       const ethSwapData = EthSwap.networks[networkId];
@@ -70,7 +70,7 @@ const App = () => {
       if (ethSwapData) {
         setEthSwapContract(new web3.eth.Contract(EthSwap.abi, ethSwapData.address));
       } else {
-        alert('Contract not deployed to the detected network');
+        alert('EthSwap contract not deployed to the detected network');
       }
 
       // Stop the loading and show the connect
@@ -93,8 +93,8 @@ const App = () => {
 
   return (
     <Fragment>
-      <Navbar account={ account}/>
-      <Main isLoading={isLoading}/>
+      <Navbar account={account}/>
+      <Main accountEthBalance={accountEthBalance} accountTokenBalance={accountTokenBalance} isLoading={isLoading}/>
     </Fragment>
   );
 };
